@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: mysql
 
 ---
 spring:
@@ -28,3 +28,5 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+    job:
+      enabled: false
