@@ -1,31 +1,48 @@
 package com.example.springbatchbase.batch;
 
+import com.example.springbatchbase.tasklet.ExecutionContextTasklet1;
+import com.example.springbatchbase.tasklet.ExecutionContextTasklet2;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.scope.context.ChunkContext;
-import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class HelloJobConfiguration {
+public class JobConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
+    private final ExecutionContextTasklet1 tasklet1;
+    private final ExecutionContextTasklet2 tasklet2;
     @Bean
     public Job helloJob(){
         return jobBuilderFactory.get("helloJob")
             .start(helloStep1())
             .next(helloStep2())
+            .next(step1())
+            .next(step2())
+            .build();
+    }
+
+    @Bean
+    public Step step2() {
+        return stepBuilderFactory.get("step2")
+            .tasklet(tasklet2)
+            .build();
+    }
+
+    @Bean
+    public Step step1() {
+        return stepBuilderFactory.get("step1")
+            .tasklet(tasklet1)
             .build();
     }
 
