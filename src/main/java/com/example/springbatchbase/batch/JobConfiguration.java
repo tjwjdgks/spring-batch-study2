@@ -5,6 +5,7 @@ import com.example.springbatchbase.tasklet.ExecutionContextTasklet2;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -20,6 +21,8 @@ public class JobConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
+    private final JobExecutionListener jobRepositoryListener;
+
     private final ExecutionContextTasklet1 tasklet1;
     private final ExecutionContextTasklet2 tasklet2;
     @Bean
@@ -29,6 +32,7 @@ public class JobConfiguration {
             .next(helloStep2())
             .next(step1())
             .next(step2())
+            .listener(jobRepositoryListener)
             .build();
     }
 
