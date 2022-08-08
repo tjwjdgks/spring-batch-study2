@@ -2,6 +2,7 @@ package com.example.springbatchbase.batch;
 
 import com.example.springbatchbase.tasklet.ExecutionContextTasklet1;
 import com.example.springbatchbase.tasklet.ExecutionContextTasklet2;
+import com.example.springbatchbase.validator.CustomJobParametersValidator;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -10,6 +11,7 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.DefaultJobParametersValidator;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +34,8 @@ public class JobConfiguration {
             .next(helloStep2())
             .next(step1())
             .next(step2())
+            .validator(new DefaultJobParametersValidator(new String[]{"name","date"},new String[]{"seq","age"}))
+//            .validator(new CustomJobParametersValidator())
             .listener(jobRepositoryListener)
             .build();
     }
