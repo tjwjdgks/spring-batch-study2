@@ -1,5 +1,6 @@
 package com.example.springbatchbase.batch;
 
+import com.example.springbatchbase.incrementer.CustomJobParametersIncrementer;
 import com.example.springbatchbase.tasklet.ExecutionContextTasklet1;
 import com.example.springbatchbase.tasklet.ExecutionContextTasklet2;
 import com.example.springbatchbase.validator.CustomJobParametersValidator;
@@ -12,6 +13,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.job.DefaultJobParametersValidator;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +36,8 @@ public class JobConfiguration {
             .next(helloStep2())
             .next(step1())
             .next(step2())
+//            .incrementer(new CustomJobParametersIncrementer())
+            .incrementer(new RunIdIncrementer())
             .validator(new DefaultJobParametersValidator(new String[]{"name","date"},new String[]{"seq","age"}))
 //            .validator(new CustomJobParametersValidator())
             .listener(jobRepositoryListener)
