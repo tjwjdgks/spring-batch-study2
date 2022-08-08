@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: mysql
+    active: custom
 
 ---
 spring:
@@ -30,3 +30,20 @@ spring:
       initialize-schema: always
     job:
       enabled: false
+---
+spring:
+  config:
+    activate:
+      on-profile: custom
+  datasource:
+    url: jdbc:mysql://localhost:3307/batch?useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: secret
+  batch:
+    job:
+      names: ${job.name:NONE}
+      enabled: false
+    jdbc:
+      initialize-schema: always
+      table-prefix: SYSTEM_ # prefix default BATCH_ 바뀔 경우 바꾼 prefix로 찾는다. 따라서 Table명 변경 필요
